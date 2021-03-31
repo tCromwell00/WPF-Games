@@ -22,6 +22,7 @@ namespace WpfApp1.Minesweeper
         public int sizeX;
         public int sizeY;
         public int maxMines;
+        public string diff;
         public SelectDifficulty()
         {
             InitializeComponent();
@@ -32,6 +33,7 @@ namespace WpfApp1.Minesweeper
             sizeX = 8;
             sizeY = 8;
             maxMines = 10;
+            diff = "Easy";
             this.Close();
         }
 
@@ -40,6 +42,7 @@ namespace WpfApp1.Minesweeper
             sizeX = 16;
             sizeY = 16;
             maxMines = 40;
+            diff = "Medium";
             this.Close();
         }
 
@@ -48,7 +51,7 @@ namespace WpfApp1.Minesweeper
             sizeX = 30;
             sizeY = 15;
             maxMines = 99;
-            
+            diff = "Hard";
             this.Close();
         }
     }

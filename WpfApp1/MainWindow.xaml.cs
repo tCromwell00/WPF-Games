@@ -28,7 +28,7 @@ namespace WpfApp1
         private void btnMinesweeper_Click(object sender, RoutedEventArgs e)
         {
             Window window = new Minesweeper.MinesweeperWindow();
-            window.Show();
+            window.ShowDialog();
         }
     }
 }
