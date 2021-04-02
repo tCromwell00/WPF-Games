@@ -20,7 +20,8 @@ namespace WpfApp1.Minesweeper
         {
             row = x;
             col = y;
-            
+            this.Content = "";
+            this.ClickMode = ClickMode.Press;
         }
 
         

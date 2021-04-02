@@ -19,8 +19,7 @@ namespace WpfApp1.Minesweeper
     /// </summary>
     public partial class SelectDifficulty : Window
     {
-        public int sizeX;
-        public int sizeY;
+        public int size;
         public int maxMines;
         public string diff;
         public SelectDifficulty()
@@ -30,8 +29,7 @@ namespace WpfApp1.Minesweeper
 
         private void btnEasy_Click(object sender, RoutedEventArgs e)
         {
-            sizeX = 8;
-            sizeY = 8;
+            size = 8;
             maxMines = 10;
             diff = "Easy";
             this.Close();
@@ -39,8 +37,7 @@ namespace WpfApp1.Minesweeper
 
         private void btnMedium_Click(object sender, RoutedEventArgs e)
         {
-            sizeX = 16;
-            sizeY = 16;
+            size = 16;
             maxMines = 40;
             diff = "Medium";
             this.Close();
@@ -48,8 +45,7 @@ namespace WpfApp1.Minesweeper
 
         private void btnHard_Click(object sender, RoutedEventArgs e)
         {
-            sizeX = 30;
-            sizeY = 15;
+            size = 24;
             maxMines = 99;
             diff = "Hard";
             this.Close();
