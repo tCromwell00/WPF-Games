@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1.Minesweeper"
         mc:Ignorable="d"
-        Title="MinesweeperWindow" Height="450" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="500" HorizontalAlignment="Left" VerticalAlignment="Top">
-    <Grid x:Name="gridView" Margin="0" UseLayoutRounding="False">
+        Title="MinesweeperWindow" VerticalContentAlignment="Top" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Center" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+    <Grid x:Name="gridView" Margin="0" UseLayoutRounding="False" HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
@@ -14,12 +14,12 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StatusBar x:Name="sbStatus" Grid.RowSpan="2" Height="30" Width="auto" VerticalAlignment="Top" HorizontalContentAlignment="Stretch">
-            <Separator Margin="0" MinWidth="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="30" Width="70"/>
+        <StatusBar x:Name="sbStatus" Grid.RowSpan="2" Height="30" Width="auto" HorizontalContentAlignment="Stretch" VerticalAlignment="Top">
+            <Separator Margin="0" MinWidth="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="30"/>
             <Label x:Name="lblDiff" Content="Difficulty" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Center" VerticalContentAlignment="Stretch"/>
-            <Separator Height="30" Margin="0" VerticalAlignment="Top" MinWidth="20" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="100"/>
-            <Button x:Name="btnGameBegin" Content="Button" VerticalAlignment="Top" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
-            <Separator Height="30" Margin="0" MinWidth="20" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="100"/>
+            <Separator Height="30" Margin="0" VerticalAlignment="Top" MinWidth="50" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            <Button x:Name="btnGameBegin" Content="Button" VerticalAlignment="Top" HorizontalAlignment="Center" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="btnGameBegin_Click"/>
+            <Separator Height="30" Margin="0" MinWidth="20" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
             <Label x:Name="lblWinLose" Content="" MinWidth="20" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
             <Separator Height="30" Margin="0" VerticalContentAlignment="Stretch" MinWidth="100" HorizontalContentAlignment="Stretch" RenderTransformOrigin="0.5,0.5"/>
 

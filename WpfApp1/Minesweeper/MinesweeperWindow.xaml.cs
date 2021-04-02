@@ -40,15 +40,28 @@ namespace WpfApp1.Minesweeper
             MAXSIDE = diff.size;
             tiles = new Cell[diff.size, diff.size];
 
-            h =(tiles.GetUpperBound(tiles.Rank - 1) + 1) * 42;
-            w = (tiles.GetUpperBound(0) + 1) * 42;
-
             gridGame = new Grid();
             gridGame.HorizontalAlignment = HorizontalAlignment.Stretch;
             gridGame.VerticalAlignment = VerticalAlignment.Stretch;
-            gridGame.Width = w;
-            gridGame.Height = h;
-           
+            if (diff.diff.Equals("Easy"))
+            {
+                gridGame.Width = MAXSIDE * 50;
+                gridGame.Height = MAXSIDE * 50;
+            }
+            else if (diff.diff.Equals("Medium"))
+            {
+                gridGame.Width = MAXSIDE * 40;
+                gridGame.Height = MAXSIDE * 40;
+            }
+            else if (diff.diff.Equals("Hard"))
+            {
+                gridGame.Width = MAXSIDE * 30;
+                gridGame.Height = MAXSIDE * 30;
+            }
+
+
+
+
             gridGame.SetValue(Grid.RowProperty, 1);
             gridGame.SetValue(Grid.ColumnProperty, 0);
 
@@ -83,12 +96,8 @@ namespace WpfApp1.Minesweeper
                     cells[i, j] = new Cell(i, j);
                     cells[i, j].SetValue(Grid.RowProperty, i);
                     cells[i, j].SetValue(Grid.ColumnProperty, j);
-                    //cells[i, j].SetValue(Cell.WidthProperty, 20.0);
-                   // cells[i, j].SetValue(Cell.HeightProperty, 20.0);
-                    //cells[i, j].MouseLeftButtonDown += new MouseButtonEventHandler(Cell_LeftClick);
                     cells[i, j].Click += Cell_LeftClick;
                     cells[i, j].MouseRightButtonDown += new MouseButtonEventHandler(Cell_RightClick);
-                    //cells[i, j].Paint += new PaintEventHandler(_Paint);
                     gridGame.Children.Add(cells[i, j]);
                 }
             }
@@ -114,20 +123,6 @@ namespace WpfApp1.Minesweeper
                     i++;
                 }
             }
-            /* for (int i = 0; i < tiles.GetLength(0); i++)
-             {
-                 for (int j = 0; j < tiles.GetLength(1); j++)
-                 {
-                     if (r.Next(1, 101) < 15)
-                     {
-                         tiles[i, j].setActive(true);
-                         tiles[i, j].setNearby(9);
-                         mineTiles[minesLaidCounter] = tiles[i, j];
-                         minesLaidCounter++;
-                     }
-
-                 }
-             }*/
         }
 
         public void RevealNearby(int row, int column)
@@ -195,10 +190,20 @@ namespace WpfApp1.Minesweeper
                 tiles[row, column].setRevealed(true);
                 tiles[row, column].Content = "💣";
                 lblWinLose.Content = "LOSE!!!";
+                foreach (Cell g in tiles)
+                {
+                    if (g.getActive() == true)
+                    {
+                        g.Content = "💣";
+                    }
+                    g.IsEnabled = false;
+                }
             }
 
             if (counter + minesLaidCounter == (diff.size * diff.size) )
             {
+                //TODO disable buttons
+
                 lblWinLose.Content = "WIN!!!";
             }
         }
@@ -261,6 +266,14 @@ namespace WpfApp1.Minesweeper
                 }
             
             
+        }
+
+        private void btnGameBegin_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: the button should only make a new game of the same difficulty. Requires a new MinesweeperWindow() constructor with the difficulty parameter. 
+            Window newGame = new MinesweeperWindow();
+            newGame.Show();
+            this.Close();
         }
     }
 }
