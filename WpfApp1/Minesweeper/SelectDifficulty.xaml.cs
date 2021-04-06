@@ -37,16 +37,16 @@ namespace WpfApp1.Minesweeper
 
         private void btnMedium_Click(object sender, RoutedEventArgs e)
         {
-            size = 16;
-            maxMines = 40;
+            size = 12;
+            maxMines = 35;
             diff = "Medium";
             this.Close();
         }
 
         private void btnHard_Click(object sender, RoutedEventArgs e)
         {
-            size = 24;
-            maxMines = 99;
+            size = 18;
+            maxMines = 90;
             diff = "Hard";
             this.Close();
         }

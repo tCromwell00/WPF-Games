@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WpfApp1.Minesweeper
 {
@@ -22,10 +23,11 @@ namespace WpfApp1.Minesweeper
             col = y;
             this.Content = "";
             this.ClickMode = ClickMode.Press;
+            this.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x8D, 0x8D, 0x8D));
         }
 
-        
 
+        
 
 
         //Getter methods

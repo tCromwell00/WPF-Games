@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace WpfApp1.Minesweeper
 {
     /// <summary>
@@ -26,20 +27,73 @@ namespace WpfApp1.Minesweeper
         public int w;
         public int MAXMINES;
         public int MAXSIDE;
+        public string difficulty;
         SelectDifficulty diff;
         int counter = 0;
         Grid gridGame;
-        public MinesweeperWindow()
+        public int gameCount;
+
+        public MinesweeperWindow(string d, int mm, int ms , int gc)
         {
-            diff = new SelectDifficulty();
-            diff.ShowDialog();
             
             InitializeComponent();
-            lblDiff.Content = diff.diff;
+
+            gameCount = gc;
+            MAXMINES = mm;
+            MAXSIDE = ms;
+            difficulty = d;
+
+
+
+            lblDiff.Content = difficulty;
+            tiles = new Cell[MAXSIDE, MAXSIDE];
+            gridGame = new Grid();
+            gridGame.HorizontalAlignment = HorizontalAlignment.Stretch;
+            gridGame.VerticalAlignment = VerticalAlignment.Stretch;
+
+            if (difficulty.Equals("Easy"))
+            {
+                gridGame.Width = MAXSIDE * 50;
+                gridGame.Height = MAXSIDE * 50;
+            }
+            else if (difficulty.Equals("Medium"))
+            {
+                gridGame.Width = MAXSIDE * 40;
+                gridGame.Height = MAXSIDE * 40;
+            }
+            else if (difficulty.Equals("Hard"))
+            {
+                gridGame.Width = MAXSIDE * 30;
+                gridGame.Height = MAXSIDE * 30;
+            }
+
+
+
+
+            gridGame.SetValue(Grid.RowProperty, 1);
+            gridGame.SetValue(Grid.ColumnProperty, 0);
+
+            gridView.Children.Add(gridGame);
+            
+            GenerateTiles(tiles);
+            LayMines();
+            FindNearby();
+        }
+
+        public MinesweeperWindow()
+        {
+            gameCount = 0;
+            diff = new SelectDifficulty();
+            diff.ShowDialog();
+
+            InitializeComponent();
+
+            difficulty = diff.diff;
+            lblDiff.Content = difficulty;
             MAXMINES = diff.maxMines;
             MAXSIDE = diff.size;
-            tiles = new Cell[diff.size, diff.size];
-
+            tiles = new Cell[MAXSIDE, MAXSIDE];
+            
             gridGame = new Grid();
             gridGame.HorizontalAlignment = HorizontalAlignment.Stretch;
             gridGame.VerticalAlignment = VerticalAlignment.Stretch;
@@ -66,12 +120,11 @@ namespace WpfApp1.Minesweeper
             gridGame.SetValue(Grid.ColumnProperty, 0);
 
             gridView.Children.Add(gridGame);
-            
+
             GenerateTiles(tiles);
             LayMines();
             FindNearby();
         }
-
         public void GenerateTiles(Cell[,] cells)
         {
             int rowNum = cells.GetUpperBound(0) + 1;
@@ -98,6 +151,7 @@ namespace WpfApp1.Minesweeper
                     cells[i, j].SetValue(Grid.ColumnProperty, j);
                     cells[i, j].Click += Cell_LeftClick;
                     cells[i, j].MouseRightButtonDown += new MouseButtonEventHandler(Cell_RightClick);
+                    
                     gridGame.Children.Add(cells[i, j]);
                 }
             }
@@ -108,9 +162,9 @@ namespace WpfApp1.Minesweeper
             bool[] mark= new bool[MAXSIDE*MAXSIDE];
             for (int i = 0; i < MAXMINES;)
             {
-                int random = r.Next() % (diff.size * diff.size);
-                int x = random / diff.size;
-                int y = random % diff.size;
+                int random = r.Next() % (MAXSIDE * MAXSIDE);
+                int x = random / MAXSIDE;
+                int y = random % MAXSIDE;
 
                 // Add the mine if no mine is placed at this
                 // position on the board
@@ -127,14 +181,20 @@ namespace WpfApp1.Minesweeper
 
         public void RevealNearby(int row, int column)
         {
-            if (row < 0 || row >=diff.size || column < 0 || column >= diff.size) { return; }
-            if (tiles[row, column].getNearby() < 9 && tiles[row, column].getRevealed() == false)
+            
+            if (row < 0 || row >=MAXSIDE || column < 0 || column >= MAXSIDE) { return; }
+            Cell clicked = tiles[row, column];
+            if (clicked.getNearby() < 9 && clicked.getRevealed() == false)
             {
-                if (tiles[row, column].getNearby() == 0)
+                
+                if (clicked.getNearby() == 0)
                 {
-                    tiles[row, column].setRevealed(true);
-                    tiles[row, column].Content = " ";
+                    clicked.setRevealed(true);
+                    clicked.Content = " ";
+                    //tiles[row,column].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xDD, 0xDD, 0xDD));
+                    clicked.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xDD, 0xDD, 0xDD));
                     counter++;
+                    lblWinLose.Content = counter;
                     RevealNearby(row + 1, column);
                     RevealNearby(row - 1, column);
                     RevealNearby(row, column + 1);
@@ -146,49 +206,52 @@ namespace WpfApp1.Minesweeper
 
 
                 }
-                if (tiles[row, column].getNearby() > 0)
+                else if (clicked.getNearby() > 0)
                 {
-                    tiles[row, column].setRevealed(true);
-                    tiles[row, column].Content = tiles[row, column].getNearby().ToString();
+                    clicked.setRevealed(true);
+                    clicked.Content = clicked.getNearby().ToString();
 
-                    switch (tiles[row, column].getNearby())
+                    switch (clicked.getNearby())
                     {
                         case 1:
-                            tiles[row, column].Foreground = Brushes.Blue;
+                            clicked.Foreground = Brushes.Blue;
                             break;
                         case 2:
-                            tiles[row, column].Foreground = Brushes.Green;
+                            clicked.Foreground = Brushes.Green;
                             break;
                         case 3:
-                            tiles[row, column].Foreground = Brushes.Red;
+                            clicked.Foreground = Brushes.Red;
                             break;
                         case 4:
-                            tiles[row, column].Foreground = Brushes.DarkBlue;
+                            clicked.Foreground = Brushes.DarkBlue;
                             break;
                         case 5:
-                            tiles[row, column].Foreground = Brushes.Maroon;
+                            clicked.Foreground = Brushes.Maroon;
                             break;
                         case 6:
-                            tiles[row, column].Foreground = Brushes.Aquamarine;
+                            clicked.Foreground = Brushes.Aquamarine;
                             break;
                         case 7:
-                            tiles[row, column].Foreground = Brushes.Black;
+                            clicked.Foreground = Brushes.Black;
                             break;
                         case 8:
-                            tiles[row, column].Foreground = Brushes.DimGray;
+                            clicked.Foreground = Brushes.DimGray;
                             break;
                         default:
-                            tiles[row, column].Foreground = Brushes.Black;
+                            clicked.Foreground = Brushes.Black;
                             break;
                     }
+                    clicked.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xDD, 0xDD, 0xDD));
                     counter++;
+                    lblWinLose.Content = counter;
                 }
             }
 
-            else if (tiles[row, column].getActive() == true)
+            else if (clicked.getActive() == true)
             {
-                tiles[row, column].setRevealed(true);
-                tiles[row, column].Content = "💣";
+                clicked.setRevealed(true);
+                clicked.Foreground = Brushes.Red;
+                clicked.Content = "💣";
                 lblWinLose.Content = "LOSE!!!";
                 foreach (Cell g in tiles)
                 {
@@ -200,9 +263,12 @@ namespace WpfApp1.Minesweeper
                 }
             }
 
-            if (counter + minesLaidCounter == (diff.size * diff.size) )
+            if (counter + minesLaidCounter == (MAXSIDE * MAXSIDE) )
             {
-                //TODO disable buttons
+                foreach(Cell g in tiles)
+                {
+                    g.IsEnabled = false;
+                }
 
                 lblWinLose.Content = "WIN!!!";
             }
@@ -245,6 +311,7 @@ namespace WpfApp1.Minesweeper
         private void Cell_LeftClick(object sender, RoutedEventArgs e) 
         {
             Cell clicked = sender as Cell;
+            
             RevealNearby(clicked.getRow(), clicked.getCol());
         }
         private void Cell_RightClick(object sender, MouseEventArgs e)
@@ -255,6 +322,7 @@ namespace WpfApp1.Minesweeper
                 if (clicked.Content.Equals(""))
                 {
                     clicked.Content = "🚩";
+                    clicked.Foreground = Brushes.Red;
                 }
                 else if (clicked.Content.Equals("🚩"))
                 {
@@ -270,8 +338,8 @@ namespace WpfApp1.Minesweeper
 
         private void btnGameBegin_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: the button should only make a new game of the same difficulty. Requires a new MinesweeperWindow() constructor with the difficulty parameter. 
-            Window newGame = new MinesweeperWindow();
+            gameCount++;
+            Window newGame = new MinesweeperWindow(difficulty,MAXMINES,MAXSIDE,gameCount);
             newGame.Show();
             this.Close();
         }
