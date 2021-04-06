@@ -331,6 +331,7 @@ namespace WpfApp1.Minesweeper
                 else if (clicked.Content.Equals("?"))
                 {
                     clicked.Content = "";
+                    clicked.Foreground = Brushes.Black;
                 }
             
             
