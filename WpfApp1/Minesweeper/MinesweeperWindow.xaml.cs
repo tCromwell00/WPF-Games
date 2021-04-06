@@ -97,24 +97,28 @@ namespace WpfApp1.Minesweeper
             gridGame = new Grid();
             gridGame.HorizontalAlignment = HorizontalAlignment.Stretch;
             gridGame.VerticalAlignment = VerticalAlignment.Stretch;
-            if (diff.diff.Equals("Easy"))
+            if(diff.diff != null)
             {
-                gridGame.Width = MAXSIDE * 50;
-                gridGame.Height = MAXSIDE * 50;
+                if (diff.diff.Equals("Easy"))
+                {
+                    gridGame.Width = MAXSIDE * 50;
+                    gridGame.Height = MAXSIDE * 50;
+                }
+                else if (diff.diff.Equals("Medium"))
+                {
+                    gridGame.Width = MAXSIDE * 40;
+                    gridGame.Height = MAXSIDE * 40;
+                }
+                else if (diff.diff.Equals("Hard"))
+                {
+                    gridGame.Width = MAXSIDE * 30;
+                    gridGame.Height = MAXSIDE * 30;
+                }
             }
-            else if (diff.diff.Equals("Medium"))
+            else
             {
-                gridGame.Width = MAXSIDE * 40;
-                gridGame.Height = MAXSIDE * 40;
+                gameWindow.Close();
             }
-            else if (diff.diff.Equals("Hard"))
-            {
-                gridGame.Width = MAXSIDE * 30;
-                gridGame.Height = MAXSIDE * 30;
-            }
-
-
-
 
             gridGame.SetValue(Grid.RowProperty, 1);
             gridGame.SetValue(Grid.ColumnProperty, 0);

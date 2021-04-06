@@ -16,25 +16,21 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for GenericCard.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class GenericCard : UserControl
     {
-        public MainWindow()
+        private int faceValue;
+        private int specialValue;
+        private int suit;
+        private string faceURI;
+        private string backURI;
+        public GenericCard(int fV, int s)
         {
             InitializeComponent();
+            this.faceValue = fV;
+            this.suit = s;
         }
-
-        private void btnMinesweeper_Click(object sender, RoutedEventArgs e)
-        {
-            Window window = new Minesweeper.MinesweeperWindow();
-            window.Show();
-        }
-
-        private void btnKings_Click(object sender, RoutedEventArgs e)
-        {
-            Window w = new KingsCorners.KingsCornersWindow();
-            w.Show();
-        }
+        //public GenericCard(int fV, int s, int sV)
     }
 }

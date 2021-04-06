@@ -57,6 +57,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GenericCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="KingsCorners\KingsCornersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,6 +72,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GenericCard.xaml.cs">
+      <DependentUpon>GenericCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KingsCorners\KingsCornersWindow.xaml.cs">
+      <DependentUpon>KingsCornersWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -110,6 +124,69 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="KingsCorners\Images\Placeholders\jack-grayscale.png" />
+    <Resource Include="KingsCorners\Images\Placeholders\king-grayscale.png" />
+    <Resource Include="KingsCorners\Images\Placeholders\queen-grayscale.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="KingsCorners\Images\Cards\cardClubs10.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs2.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs3.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs4.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs5.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs6.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs7.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs8.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubs9.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubsA.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubsJ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubsK.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardClubsQ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds10.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds2.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds3.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds4.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds5.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds6.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds7.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds8.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamonds9.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamondsA.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamondsJ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamondsK.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardDiamondsQ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts10.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts2.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts3.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts4.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts5.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts6.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts7.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts8.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHearts9.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHeartsA.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHeartsJ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHeartsK.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardHeartsQ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardJoker.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades10.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades2.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades3.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades4.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades5.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades6.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades7.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades8.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpades9.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpadesA.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpadesJ.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpadesK.png" />
+    <Resource Include="KingsCorners\Images\Cards\cardSpadesQ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="KingsCorners\Images\Cards\cardBack_red3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

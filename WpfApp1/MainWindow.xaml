@@ -8,5 +8,6 @@
         Title="Game Window" Height="450" Width="800">
     <Grid x:Name="ButtonGrid">
         <Button x:Name="btnMinesweeper" HorizontalAlignment="Left" Margin="69,60,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="#FFDDDDDD" Content="Minesweeper" Click="btnMinesweeper_Click"/>
+        <Button x:Name="btnKings" Margin="154,60,0,0" VerticalAlignment="Top" Height="80" Background="#FFDDDDDD" Content="Kings Corners"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="False" HorizontalAlignment="Left" Width="80" Click="btnKings_Click"/>
     </Grid>
 </Window>
