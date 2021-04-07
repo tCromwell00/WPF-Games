@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace WpfApp1
 {
     /// <summary>
@@ -20,17 +21,35 @@ namespace WpfApp1
     /// </summary>
     public partial class GenericCard : UserControl
     {
-        private int faceValue;
-        private int specialValue;
-        private int suit;
-        private string faceURI;
-        private string backURI;
-        public GenericCard(int fV, int s)
+        private int _faceValue;  //1-14
+        private string _symbol;  //Capitalize
+        private string _suit; //Capitalize first letter: Clubs, Hearts, Diamonds, Spades
+        ImageBrush faceImage=new ImageBrush();
+        ImageBrush backImage=new ImageBrush();
+        public bool faceDown = true;
+
+        public GenericCard(int fV, string sym, string suit, bool facingDown = true)
         {
             InitializeComponent();
-            this.faceValue = fV;
-            this.suit = s;
+            _faceValue = fV;
+            _symbol = sym;
+            _suit = suit;
+            string cardImageURI = "pack://application:,,,/KingsCorners/Images/Cards/card" + _suit + _symbol+".png";
+            faceImage.ImageSource = new BitmapImage(new Uri(cardImageURI));
+            backImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/KingsCorners/Images/Cards/cardBack_red3.png"));
+            faceDown = facingDown;
+            if (faceDown == true)
+            {
+                Card.Fill = backImage;
+            }
         }
-        //public GenericCard(int fV, int s, int sV)
+
+        public void Flip()
+        {
+            if (faceDown == true) { faceDown = false; Card.Fill = faceImage; }
+            else { faceDown = true;Card.Fill = backImage; }
+        }
+
+        
     }
 }

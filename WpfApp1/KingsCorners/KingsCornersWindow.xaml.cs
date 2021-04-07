@@ -22,6 +22,8 @@ namespace WpfApp1.KingsCorners
         public KingsCornersWindow()
         {
             InitializeComponent();
+            GenericCard gc = new GenericCard(10, "10", "Clubs");
+            
         }
     }
 }

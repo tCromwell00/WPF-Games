@@ -76,6 +76,7 @@
     <Compile Include="GenericCard.xaml.cs">
       <DependentUpon>GenericCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GenericCardDeck.cs" />
     <Compile Include="KingsCorners\KingsCornersWindow.xaml.cs">
       <DependentUpon>KingsCornersWindow.xaml</DependentUpon>
     </Compile>
@@ -90,6 +91,10 @@
     <Page Include="Minesweeper\SelectDifficulty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
