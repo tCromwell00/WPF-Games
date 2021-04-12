@@ -14,7 +14,6 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -87,7 +86,13 @@
                 </Grid.Background>
             </Grid>
         </Grid>
-        <StackPanel x:Name="spCards" HorizontalAlignment="Left" Height="100" Margin="68,507,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal" CanHorizontallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
+        <StackPanel x:Name="spCards" HorizontalAlignment="Left" Height="93" Margin="60,456,0,0" VerticalAlignment="Top" Width="68" Orientation="Horizontal" CanHorizontallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
+        <Rectangle HorizontalAlignment="Left" Height="93" Margin="52,456,0,0" Stroke="Black" VerticalAlignment="Top" Width="68" Panel.ZIndex="-1" RadiusX="5" RadiusY="5" StrokeThickness="0">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="Images/Cards/cardBack_red3.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
+
 
     </Grid>
 </Window>

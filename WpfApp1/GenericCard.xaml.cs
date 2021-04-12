@@ -27,6 +27,7 @@ namespace WpfApp1
         ImageBrush faceImage=new ImageBrush();
         ImageBrush backImage=new ImageBrush();
         public bool faceDown = true;
+        public bool locked = false;
         private Brush _previousFill = null;
         public GenericCard()
         {
@@ -38,6 +39,7 @@ namespace WpfApp1
             _faceValue = fV;
             _symbol = sym;
             _suit = suit;
+            locked = false;
             if(!sym.Equals("") && !suit.Equals(""))
             {
                 string cardImageURI = "pack://application:,,,/KingsCorners/Images/Cards/card" + _suit + _symbol + ".png";
@@ -65,7 +67,24 @@ namespace WpfApp1
             this.backImage = gc.backImage;
             this.g.Height = gc.g.Height;
             this.g.Width = gc.g.Width;
+            this.locked = gc.locked;
         }
+
+        public int FaceValue
+        {
+            get { return _faceValue; }           
+        }
+
+        public string Symbol
+        {
+            get { return _symbol; }
+        }
+
+        public string Suit
+        {
+            get { return _suit; }
+        }
+
 
         public void Flip()
         {
@@ -111,6 +130,7 @@ namespace WpfApp1
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString);
                     g.Background=newFill;
+                 
 
                     // Set Effects to notify the drag source what effect
                     // the drag-and-drop operation had.
@@ -184,6 +204,10 @@ namespace WpfApp1
             // Undo the preview that was applied in OnDragEnter.
             g.Background = _previousFill;
         }
+
+
+
+        
 
     }
 }
