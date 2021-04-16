@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1.KingsCorners" xmlns:local1="clr-namespace:WpfApp1"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="gameWindow" x:Class="WpfApp1.KingsCorners.KingsCornersWindow"
         mc:Ignorable="d"
-        Title="Kings in the Corners" Height="666" Width="600" UseLayoutRounding="True" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
+        Title="Kings in the Corners" Height="666" Width="600" UseLayoutRounding="True" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" MinWidth="600">
     <Grid Background="#FF00A000">
         <Grid x:Name="gridBoard" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="129,31,137,205" AllowDrop="True" Height="auto" Width="auto">
             <Grid.RowDefinitions>
@@ -92,6 +92,9 @@
                 <ImageBrush ImageSource="Images/Cards/cardBack_red3.png"/>
             </Rectangle.Fill>
         </Rectangle>
+        <Canvas x:Name="cnvDiscard" HorizontalAlignment="Left" Height="93" Margin="480,34,0,0" VerticalAlignment="Top" Width="68"/>
+        <Label x:Name="lblWarning" Content="You cannot remove cards until the board is filled." HorizontalAlignment="Left" Margin="156,456,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20"/>
+        <Label x:Name="lblGameOver" Content="There are no more legal moves. Game Over." HorizontalAlignment="Left" Margin="156,493,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20"/>
 
 
     </Grid>
