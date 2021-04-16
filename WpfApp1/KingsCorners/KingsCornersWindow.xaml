@@ -92,9 +92,10 @@
                 <ImageBrush ImageSource="Images/Cards/cardBack_red3.png"/>
             </Rectangle.Fill>
         </Rectangle>
-        <Canvas x:Name="cnvDiscard" HorizontalAlignment="Left" Height="93" Margin="480,34,0,0" VerticalAlignment="Top" Width="68"/>
-        <Label x:Name="lblWarning" Content="You cannot remove cards until the board is filled." HorizontalAlignment="Left" Margin="156,456,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20"/>
-        <Label x:Name="lblGameOver" Content="There are no more legal moves. Game Over." HorizontalAlignment="Left" Margin="156,493,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20"/>
+        <Canvas x:Name="cnvDiscard" HorizontalAlignment="Left" Height="93" Margin="480,34,0,0" VerticalAlignment="Top" Width="68" AllowDrop="True"/>
+        <Label x:Name="lblWarning" Content="You cannot remove cards until the board is filled." HorizontalAlignment="Left" Margin="156,456,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
+        <Label x:Name="lblGameOver" Content="There are no more legal moves. Game Over." HorizontalAlignment="Left" Margin="156,493,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
+        <Label x:Name="lblLockedCard" Content="You can't move face cards." HorizontalAlignment="Left" Margin="156,525,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
 
 
     </Grid>

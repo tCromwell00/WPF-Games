@@ -20,20 +20,26 @@ namespace WpfApp1.KingsCorners
     public partial class KingsCornersWindow : Window
     {
         private bool _matchingMode;
-        private GenericCard[] clickedCards = new GenericCard[2];
+        private bool testing = true;
+        //private GenericCard[] clickedCards = new GenericCard[2];
         List<GenericCard> deck;
         GenericCard[,] CardsInPlay = new GenericCard[4,4]; 
-        Grid[,] spots = new Grid[4, 4];
+       /// Grid[,] spots = new Grid[4, 4];
         public KingsCornersWindow()
         {
             InitializeComponent(); 
             GenericCardDeck cards = new GenericCardDeck();
             deck = cards.deck;
-            MyExtensions.Shuffle(deck);
+            if (!testing)
+            {
+                MyExtensions.Shuffle(deck);
+            }           
             foreach (GenericCard gc in deck)
             {
-                gc.Visibility = Visibility.Collapsed;
-                spCards.Children.Add(gc);               
+                gc.Visibility = Visibility.Collapsed;                
+                
+               
+                spCards.Children.Add(gc);
             }
             ShowNextCardInPile();
             _matchingMode = false;
@@ -89,7 +95,7 @@ namespace WpfApp1.KingsCorners
                             //placing new cards on the board
                             if (_parent == spCards)
                             {
-                                
+
                                 if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
                                 {
                                     if (_gcDragging.Symbol.Equals("K"))
@@ -99,11 +105,11 @@ namespace WpfApp1.KingsCorners
                                         {
                                             _gcDragging.locked = true;
                                             _parent.Children.Remove(_element);
-                                            int column = (int)_panel.GetValue(Grid.ColumnProperty);
-                                            int row = (int)_panel.GetValue(Grid.RowProperty);
-                                            CardsInPlay[column, row] = _gcDragging;
+                                           int column = (int)_panel.GetValue(Grid.ColumnProperty);
+                                           int row = (int)_panel.GetValue(Grid.RowProperty);
+                                           CardsInPlay[column, row] = _gcDragging;
                                             _panel.Children.Add(_gcDragging);
-                                            
+
                                             ShowNextCardInPile();
                                         }
                                     }
@@ -142,29 +148,38 @@ namespace WpfApp1.KingsCorners
                                     //Empty
                                     else
                                     {
-                                         if(!(_gcDragging.Symbol.Equals("K")) && !(_gcDragging.Symbol.Equals("Q")) && !(_gcDragging.Symbol.Equals("J")))
-                                         {
-                                             _parent.Children.Remove(_element);
-                                             _panel.Children.Add(_gcDragging);
+                                        if (!(_gcDragging.Symbol.Equals("K")) && !(_gcDragging.Symbol.Equals("Q")) && !(_gcDragging.Symbol.Equals("J")))
+                                        {
+                                            _parent.Children.Remove(_element);
+                                            _panel.Children.Add(_gcDragging);
                                             int column = (int)_panel.GetValue(Grid.ColumnProperty);
                                             int row = (int)_panel.GetValue(Grid.RowProperty);
-                                            CardsInPlay[column, row] = _gcDragging;
+                                           CardsInPlay[column, row] = _gcDragging;
                                             ShowNextCardInPile();
-                                         }
+                                        }
 
                                     }
-                                    
+
                                     // set the value to return to the DoDragDrop call
                                     e.Effects = DragDropEffects.Move;
 
                                     // Need to add logic for checking if there are still playable moves.
-                                    if (IsBoardFilled() == true)
+                                    if (IsBoardPlayable() == true)
                                     {
-                                        _matchingMode = true;
+                                        if (IsBoardFilled() == true)
+                                        {
+                                            _matchingMode = true;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //game over
+                                        lblGameOver.Visibility = Visibility.Visible;
                                     }
                                 }
                             }
-                            else if(VisualTreeHelper.GetParent(_parent).Equals(gridBoard))
+                            else if (VisualTreeHelper.GetParent(_parent).Equals(gridBoard))
                             {
                                 lblWarning.Visibility = Visibility.Visible;
                             }
@@ -172,90 +187,97 @@ namespace WpfApp1.KingsCorners
                         }
                     }
                 }
+                if (_matchingMode == true)
+                {
+                    Panel _target = sender as Panel;
+                    UIElement _element = (UIElement)e.Data.GetData("Object");
+                    GenericCard target = new GenericCard((GenericCard)_target.Children[0]);
+                    GenericCard _gcDragging = new GenericCard((GenericCard)_element);
+
+                    if (_target != null && _element != null)
+                    {
+                        // Get the panel that the element currently belongs to,
+                        // then remove it from that panel and add it the Children of
+                        // the panel that its been dropped on.
+                        Panel _parent = (Panel)VisualTreeHelper.GetParent(_element);
+
+                        if (_parent != null)
+                        {
+                            //Dropping a card onto another card to discard them
+                            if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
+                            {
+                                if (_gcDragging.locked == true || target.locked == true)
+                                {
+                                    lblLockedCard.Visibility = Visibility.Visible;
+                                }
+                                else
+                                {
+                                    Discard(_gcDragging, target);
+                                }
+
+                                // set the value to return to the DoDragDrop call
+                                e.Effects = DragDropEffects.Move;
+                            }
+                        }
+                    }
+                }
             }
-        }
+        } 
 
-        private void CardClick(object sender, MouseEventArgs e)
+       /* private void CardClick(object sender, MouseButtonEventArgs e)
         {
-
+            GenericCard source = e.Source as GenericCard;
             if (_matchingMode == true)
             {
                 if (clickedCards[0] == null && clickedCards[1] == null)
                 {
-                    clickedCards[0] = sender as GenericCard;
+                    
+                        clickedCards[0] = source;
+
                 }
                 else if (clickedCards[0] != null && clickedCards[1] == null)
                 {
+                    
                     if (clickedCards[0].Symbol.Equals("10"))
                     {
                         Discard();
                     }
                     else
                     {
-                        clickedCards[1] = sender as GenericCard;
-                        CheckPair();
+                       
+                            clickedCards[1] = source;
+                            CheckPair();
+                      
+                       
                     }
                 }
             }
-        }
+        }*/
 
 
-        private void IsBoardPlayable()
+        private bool IsBoardPlayable()
         {
             //Check to see if there are still playable moves. 
-        }
-
-        private void Discard()
-        {
-            if (clickedCards[0] != null) 
-            { 
-                cnvDiscard.Children.Add(clickedCards[0]);
-                int x = (int)clickedCards[0].GetValue(Grid.ColumnProperty);
-                int y = (int)clickedCards[0].GetValue(Grid.RowProperty);
-                foreach(Grid a in gridBoard.Children)
-                {
-                    if (a.Children.Contains(CardsInPlay[x, y]))
-                    {
-                        a.Children.Remove(CardsInPlay[x, y]);
-                        CardsInPlay[x, y] = null;
-                        clickedCards[0] = null;
-                        break;
-                    }
-                }
-            }
-            if (clickedCards[1] != null) 
-            {
-                cnvDiscard.Children.Add(clickedCards[1]);
-                int x = (int)clickedCards[1].GetValue(Grid.ColumnProperty);
-                int y = (int)clickedCards[1].GetValue(Grid.RowProperty);
-                foreach (Grid a in gridBoard.Children)
-                {
-                    if (a.Children.Contains(CardsInPlay[x, y]))
-                    {
-                        a.Children.Remove(CardsInPlay[x, y]);
-                        CardsInPlay[x, y] = null;
-                        clickedCards[1] = null;
-                        break;
-                    }
-                }
-            }
-
-        }
-        private void CheckPair()
-        {
-            var a = clickedCards[0].FaceValue;
-            var b = clickedCards[1].FaceValue;
-            if (a + b == 10)
-            {
-                Discard();
-            }
-            else
-            {
-                clickedCards[0] = null;
-                clickedCards[1] = null;
-            }
             
+            return true;
         }
+
+        private void Discard(GenericCard dragged, GenericCard target)
+        {
+            Panel _parentD = (Panel)VisualTreeHelper.GetParent(dragged);
+            Panel _parentT = (Panel)VisualTreeHelper.GetParent(target);
+            if (dragged.FaceValue + target.FaceValue == 10)
+            {
+                _parentD.Children.Remove(dragged);
+                _parentT.Children.Remove(target);
+                target.RenderTransform = new RotateTransform(30.0);
+                dragged.RenderTransform = new RotateTransform(-14.5);
+                cnvDiscard.Children.Add(target);
+                cnvDiscard.Children.Add(dragged);              
+            }
+
+        }
+    
 
         private bool IsBoardFilled()
         {
