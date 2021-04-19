@@ -30,14 +30,14 @@ namespace WpfApp1.KingsCorners
             InitializeComponent(); 
             GenericCardDeck cards = new GenericCardDeck();
             deck = cards.deck;
-            if (!testing)
+            if (testing==false)
             {
                 MyExtensions.Shuffle(deck);
             }           
             foreach (GenericCard gc in deck)
             {
-                gc.Visibility = Visibility.Collapsed;                
-                
+                gc.Visibility = Visibility.Collapsed;
+                gc.AllowDrop = true;
                
                 spCards.Children.Add(gc);
             }
@@ -73,6 +73,7 @@ namespace WpfApp1.KingsCorners
         {
             // If an element in the panel has already handled the drop,
             // the panel should not also handle it.
+            //lblDebug.Content = e.Handled.ToString();
             if (e.Handled == false)
             {
                 if (_matchingMode == false)
@@ -154,7 +155,7 @@ namespace WpfApp1.KingsCorners
                                             _panel.Children.Add(_gcDragging);
                                             int column = (int)_panel.GetValue(Grid.ColumnProperty);
                                             int row = (int)_panel.GetValue(Grid.RowProperty);
-                                           CardsInPlay[column, row] = _gcDragging;
+                                            CardsInPlay[column, row] = _gcDragging;
                                             ShowNextCardInPile();
                                         }
 
@@ -189,19 +190,23 @@ namespace WpfApp1.KingsCorners
                 }
                 if (_matchingMode == true)
                 {
-                    Panel _target = sender as Panel;
+                    string debug = "";
+                    Panel _target = (Panel)sender;
                     UIElement _element = (UIElement)e.Data.GetData("Object");
                     GenericCard target = new GenericCard((GenericCard)_target.Children[0]);
                     GenericCard _gcDragging = new GenericCard((GenericCard)_element);
-
+                    debug += "_target:" + _target.ToString() + " target:" + target.ToString() + " _gcDragging:" + _gcDragging.ToString();
+                    lblDebug.Content = debug;
                     if (_target != null && _element != null)
                     {
+                       
                         // Get the panel that the element currently belongs to,
                         // then remove it from that panel and add it the Children of
                         // the panel that its been dropped on.
-                        Panel _parent = (Panel)VisualTreeHelper.GetParent(_element);
+                        Panel _parentD = (Panel)VisualTreeHelper.GetParent(_gcDragging);
+                        Panel _parentT = (Panel)VisualTreeHelper.GetParent(target);
 
-                        if (_parent != null)
+                        if (_parentD != null)
                         {
                             //Dropping a card onto another card to discard them
                             if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
@@ -212,7 +217,21 @@ namespace WpfApp1.KingsCorners
                                 }
                                 else
                                 {
-                                    Discard(_gcDragging, target);
+                                    lblDebug.Content ="the target card's symbol is: "+ debug;
+
+                                    if (_gcDragging.FaceValue + target.FaceValue == 10)
+                                    {
+                                        _parentD.Children.Remove(_gcDragging);
+                                        _parentT.Children.Remove(target);
+                                        target.RenderTransform = new RotateTransform(30.0);
+                                        _gcDragging.RenderTransform = new RotateTransform(-14.5);
+                                        cnvDiscard.Children.Add(target);
+                                        cnvDiscard.Children.Add(_gcDragging);
+                                    }
+
+
+                                   // Discard(_gcDragging, target);
+
                                 }
 
                                 // set the value to return to the DoDragDrop call
