@@ -197,22 +197,22 @@ namespace WpfApp1.KingsCorners
                 }
                 if (_matchingMode == true)
                 {
-                    Panel _panel = (Panel)sender;
+                    Panel _target = (Panel)sender;
                     UIElement _element = (UIElement)e.Data.GetData("Object");
 
                     GenericCard _gcDragging = new GenericCard((GenericCard)_element);
 
-                    if (_panel != null && _element != null)
+                    if (_target != null && _element != null)
                     {
                         // Get the panel that the element currently belongs to,
                         // then remove it from that panel and add it the Children of
                         // the panel that its been dropped on.
-                        Panel _parent = (Panel)VisualTreeHelper.GetParent(_element);
+                        Panel _elementParent = (Panel)VisualTreeHelper.GetParent(_element);
 
-                        if (_parent != null)
+                        if (_elementParent != null)
                         {
                             //placing new cards on the board
-                            if (_parent == spCards)
+                            if (_elementParent ==gridBoard)
                             {
 
                                 if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
@@ -237,10 +237,7 @@ namespace WpfApp1.KingsCorners
                                     }
                                 }
                             }
-                            else if (VisualTreeHelper.GetParent(_parent).Equals(gridBoard))
-                            {
-                                lblWarning.Visibility = Visibility.Visible;
-                            }
+                            
 
                         }
                     }
