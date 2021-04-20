@@ -26,7 +26,7 @@
                     <ImageBrush ImageSource="Images/Placeholders/king-grayscale.png"/>
                 </Grid.Background>
             </Grid>
-            <Grid Grid.Column="1" HorizontalAlignment="Center" Height="93" Margin="0" VerticalAlignment="Center" Width="68" DragOver="Panel_DragOver" Drop="Panel_Drop">
+            <Grid HorizontalAlignment="Center" Height="93" VerticalAlignment="Center" Width="68" DragOver="Panel_DragOver" Drop="Panel_Drop" Grid.Column="1">
                 <Grid.Background>
                     <ImageBrush ImageSource="Images/Placeholders/queen-grayscale.png"/>
                 </Grid.Background>
@@ -41,12 +41,12 @@
                     <ImageBrush ImageSource="Images/Placeholders/king-grayscale.png"/>
                 </Grid.Background>
             </Grid>
-            <Grid Margin="0" Grid.Row="1" Width="68" Height="93" HorizontalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" VerticalAlignment="Center">
+            <Grid Grid.Row="1" Width="68" Height="93" HorizontalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" VerticalAlignment="Center">
                 <Grid.Background>
                     <ImageBrush ImageSource="Images/Placeholders/jack-grayscale.png"/>
                 </Grid.Background>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="1" Width="68" Height="93" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" HorizontalAlignment="Center" Background="#00000000"/>
+            <Grid Grid.Row="1" Width="68" Height="93" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" HorizontalAlignment="Center" Background="#00000000" Grid.Column="1"/>
             <Grid Grid.Row="1" Grid.Column="2" Width="68" Height="93" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" HorizontalAlignment="Center" Background="#00000000"/>
             <Grid Grid.Row="1" Grid.Column="3" Width="68" Height="93" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" HorizontalAlignment="Center">
                 <Grid.Background>
@@ -92,10 +92,26 @@
                 <ImageBrush ImageSource="Images/Cards/cardBack_red3.png"/>
             </Rectangle.Fill>
         </Rectangle>
-        <Canvas x:Name="cnvDiscard" HorizontalAlignment="Left" Height="93" Margin="480,34,0,0" VerticalAlignment="Top" Width="68" AllowDrop="True"/>
+        <Canvas x:Name="cnvDiscard" HorizontalAlignment="Left" Height="93" Margin="480,34,0,0" VerticalAlignment="Top" Width="68" AllowDrop="True" Background="Black"/>
         <Label x:Name="lblWarning" Content="You cannot remove cards until the board is filled." HorizontalAlignment="Left" Margin="156,456,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
         <Label x:Name="lblGameOver" Content="There are no more legal moves. Game Over." HorizontalAlignment="Left" Margin="156,493,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
         <Label x:Name="lblLockedCard" Content="You can't move face cards." HorizontalAlignment="Left" Margin="156,525,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
+        <Grid x:Name="brickKing" Width="68" Height="94" HorizontalAlignment="Center" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop"  Margin="37,44,487,497" Visibility="Hidden"  >
+            <Grid.Background>
+                <ImageBrush ImageSource="Images/Placeholders/king-grayscale.png"/>
+            </Grid.Background>
+        </Grid>
+        <Grid x:Name="brickQueen" HorizontalAlignment="Center" Height="93" VerticalAlignment="Center" Width="68" DragOver="Panel_DragOver" Drop="Panel_Drop" Margin="37,138,487,404" Visibility="Hidden">
+            <Grid.Background>
+                <ImageBrush ImageSource="Images/Placeholders/queen-grayscale.png"/>
+            </Grid.Background>
+        </Grid>
+        <Grid x:Name="brickJack" Width="68" Height="93" HorizontalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" VerticalAlignment="Center" Margin="37,231,487,311" Visibility="Hidden">
+            <Grid.Background>
+                <ImageBrush ImageSource="Images/Placeholders/jack-grayscale.png"/>
+            </Grid.Background>
+        </Grid>
+        <Grid x:Name="brickBlank" Width="68" Height="93" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" HorizontalAlignment="Center" Background="#00000000" Margin="37,324,487,218"/>
 
 
     </Grid>

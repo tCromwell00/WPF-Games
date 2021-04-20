@@ -23,22 +23,22 @@ namespace WpfApp1.KingsCorners
         private bool testing = true;
         //private GenericCard[] clickedCards = new GenericCard[2];
         List<GenericCard> deck;
-        GenericCard[,] CardsInPlay = new GenericCard[4,4]; 
-       /// Grid[,] spots = new Grid[4, 4];
+        GenericCard[,] CardsInPlay = new GenericCard[4, 4];
+        /// Grid[,] spots = new Grid[4, 4];
+        
         public KingsCornersWindow()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             GenericCardDeck cards = new GenericCardDeck();
             deck = cards.deck;
-            if (!testing)
+            if (testing == false)
             {
                 MyExtensions.Shuffle(deck);
-            }           
+            }
             foreach (GenericCard gc in deck)
             {
-                gc.Visibility = Visibility.Collapsed;                
-                
-               
+                gc.Visibility = Visibility.Collapsed;
+
                 spCards.Children.Add(gc);
             }
             ShowNextCardInPile();
@@ -52,7 +52,7 @@ namespace WpfApp1.KingsCorners
             f.Flip();
         }
 
-       
+
         private void Panel_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent("Object"))
@@ -73,11 +73,130 @@ namespace WpfApp1.KingsCorners
         {
             // If an element in the panel has already handled the drop,
             // the panel should not also handle it.
+            //lblDebug.Content = e.Handled.ToString();
             if (e.Handled == false)
             {
                 if (_matchingMode == false)
                 {
                     lblWarning.Visibility = Visibility.Hidden;
+                    Panel _target= (Panel)sender;
+                    UIElement _element = (UIElement)e.Data.GetData("Object");
+
+                    GenericCard _gcDragging = new GenericCard((GenericCard)_element);
+
+                    if (_target != null && _element != null)
+                    {
+                        // Get the panel that the element currently belongs to,
+                        // then remove it from that panel and add it the Children of
+                        // the panel that its been dropped on.
+                        Panel _targetParent = (Panel)VisualTreeHelper.GetParent(_target);
+                        Panel _elementParent = (Panel)VisualTreeHelper.GetParent(_element);
+
+                        if (_targetParent != null)
+                        {
+                            //placing new cards on the board
+                            if (_elementParent == spCards)
+                            {
+
+                                if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
+                                {
+                                    if (_gcDragging.Symbol.Equals("K"))
+                                    {
+                                        //Kings
+                                        if (((_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(3)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(3))))
+                                        {
+                                            _gcDragging.locked = true;
+                                            _elementParent.Children.Remove(_element);
+
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
+                                            _targetParent.Children.Remove(_target);
+                                            _targetParent.Children.Add(_gcDragging);
+                                            
+
+
+                                            ShowNextCardInPile();
+                                        }
+                                    }
+
+                                    if (_gcDragging.Symbol.Equals("Q"))
+                                    {
+                                        if (((_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(1)) || (_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(2)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(1)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(2))))
+                                        {
+                                            _gcDragging.locked = true;
+                                            _elementParent.Children.Remove(_element);
+
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
+                                            _targetParent.Children.Remove(_target);
+                                            _targetParent.Children.Add(_gcDragging);
+
+                                            ShowNextCardInPile();
+
+                                        }
+                                    }
+
+                                    //Jacks
+                                    if (_gcDragging.Symbol.Equals("J"))
+                                    {
+                                        if (((_target.GetValue(Grid.RowProperty).Equals(1) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(1) && _target.GetValue(Grid.ColumnProperty).Equals(3)) || (_target.GetValue(Grid.RowProperty).Equals(2) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(2) && _target.GetValue(Grid.ColumnProperty).Equals(3))))
+                                        {
+                                            _gcDragging.locked = true;
+                                            _elementParent.Children.Remove(_element);
+
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
+                                            _targetParent.Children.Remove(_target);
+                                            _targetParent.Children.Add(_gcDragging);
+                                            ShowNextCardInPile();
+                                        }
+                                    }
+                                    //Empty
+                                    else
+                                    {
+                                        if (!(_gcDragging.Symbol.Equals("K")) && !(_gcDragging.Symbol.Equals("Q")) && !(_gcDragging.Symbol.Equals("J")))
+                                        {
+                                            
+                                            _elementParent.Children.Remove(_element);
+
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
+                                            _targetParent.Children.Remove(_target);
+                                            _targetParent.Children.Add(_gcDragging);
+                                            ShowNextCardInPile();
+                                        }
+
+                                    }
+
+                                    // set the value to return to the DoDragDrop call
+                                    e.Effects = DragDropEffects.Move;
+
+                                    // Need to add logic for checking if there are still playable moves.
+                                    if (IsBoardPlayable() == true)
+                                    {
+                                        if (IsBoardFilled() == true)
+                                        {
+                                            _matchingMode = true;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //game over
+                                        lblGameOver.Visibility = Visibility.Visible;
+                                    }
+                                }
+                            }
+                            else if (VisualTreeHelper.GetParent(_elementParent).Equals(gridBoard))
+                            {
+                                lblWarning.Visibility = Visibility.Visible;
+                            }
+
+                        }
+                    }
+                }
+                if (_matchingMode == true)
+                {
                     Panel _panel = (Panel)sender;
                     UIElement _element = (UIElement)e.Data.GetData("Object");
 
@@ -98,67 +217,6 @@ namespace WpfApp1.KingsCorners
 
                                 if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
                                 {
-                                    if (_gcDragging.Symbol.Equals("K"))
-                                    {
-                                        //Kings
-                                        if (((_panel.GetValue(Grid.RowProperty).Equals(0) && _panel.GetValue(Grid.ColumnProperty).Equals(0)) || (_panel.GetValue(Grid.RowProperty).Equals(0) && _panel.GetValue(Grid.ColumnProperty).Equals(3)) || (_panel.GetValue(Grid.RowProperty).Equals(3) && _panel.GetValue(Grid.ColumnProperty).Equals(0)) || (_panel.GetValue(Grid.RowProperty).Equals(3) && _panel.GetValue(Grid.ColumnProperty).Equals(3))))
-                                        {
-                                            _gcDragging.locked = true;
-                                            _parent.Children.Remove(_element);
-                                           int column = (int)_panel.GetValue(Grid.ColumnProperty);
-                                           int row = (int)_panel.GetValue(Grid.RowProperty);
-                                           CardsInPlay[column, row] = _gcDragging;
-                                            _panel.Children.Add(_gcDragging);
-
-                                            ShowNextCardInPile();
-                                        }
-                                    }
-
-                                    if (_gcDragging.Symbol.Equals("Q"))
-                                    {
-                                        if (((_panel.GetValue(Grid.RowProperty).Equals(0) && _panel.GetValue(Grid.ColumnProperty).Equals(1)) || (_panel.GetValue(Grid.RowProperty).Equals(0) && _panel.GetValue(Grid.ColumnProperty).Equals(2)) || (_panel.GetValue(Grid.RowProperty).Equals(3) && _panel.GetValue(Grid.ColumnProperty).Equals(1)) || (_panel.GetValue(Grid.RowProperty).Equals(3) && _panel.GetValue(Grid.ColumnProperty).Equals(2))))
-                                        {
-
-                                            _gcDragging.locked = true;
-                                            _parent.Children.Remove(_element);
-                                            _panel.Children.Add(_gcDragging);
-                                            int column = (int)_panel.GetValue(Grid.ColumnProperty);
-                                            int row = (int)_panel.GetValue(Grid.RowProperty);
-                                            CardsInPlay[column, row] = _gcDragging;
-                                            ShowNextCardInPile();
-
-                                        }
-                                    }
-
-                                    //Jacks
-                                    if (_gcDragging.Symbol.Equals("J"))
-                                    {
-                                        if (((_panel.GetValue(Grid.RowProperty).Equals(1) && _panel.GetValue(Grid.ColumnProperty).Equals(0)) || (_panel.GetValue(Grid.RowProperty).Equals(1) && _panel.GetValue(Grid.ColumnProperty).Equals(3)) || (_panel.GetValue(Grid.RowProperty).Equals(2) && _panel.GetValue(Grid.ColumnProperty).Equals(0)) || (_panel.GetValue(Grid.RowProperty).Equals(2) && _panel.GetValue(Grid.ColumnProperty).Equals(3))))
-                                        {
-                                            _gcDragging.locked = true;
-                                            _parent.Children.Remove(_element);
-
-                                            _panel.Children.Add(_gcDragging);
-                                            int column = (int)_panel.GetValue(Grid.ColumnProperty);
-                                            int row = (int)_panel.GetValue(Grid.RowProperty);
-                                            CardsInPlay[column, row] = _gcDragging;
-                                            ShowNextCardInPile();
-                                        }
-                                    }
-                                    //Empty
-                                    else
-                                    {
-                                        if (!(_gcDragging.Symbol.Equals("K")) && !(_gcDragging.Symbol.Equals("Q")) && !(_gcDragging.Symbol.Equals("J")))
-                                        {
-                                            _parent.Children.Remove(_element);
-                                            _panel.Children.Add(_gcDragging);
-                                            int column = (int)_panel.GetValue(Grid.ColumnProperty);
-                                            int row = (int)_panel.GetValue(Grid.RowProperty);
-                                           CardsInPlay[column, row] = _gcDragging;
-                                            ShowNextCardInPile();
-                                        }
-
-                                    }
 
                                     // set the value to return to the DoDragDrop call
                                     e.Effects = DragDropEffects.Move;
@@ -186,79 +244,16 @@ namespace WpfApp1.KingsCorners
 
                         }
                     }
-                }
-                if (_matchingMode == true)
-                {
-                    Panel _target = sender as Panel;
-                    UIElement _element = (UIElement)e.Data.GetData("Object");
-                    GenericCard target = new GenericCard((GenericCard)_target.Children[0]);
-                    GenericCard _gcDragging = new GenericCard((GenericCard)_element);
 
-                    if (_target != null && _element != null)
-                    {
-                        // Get the panel that the element currently belongs to,
-                        // then remove it from that panel and add it the Children of
-                        // the panel that its been dropped on.
-                        Panel _parent = (Panel)VisualTreeHelper.GetParent(_element);
 
-                        if (_parent != null)
-                        {
-                            //Dropping a card onto another card to discard them
-                            if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
-                            {
-                                if (_gcDragging.locked == true || target.locked == true)
-                                {
-                                    lblLockedCard.Visibility = Visibility.Visible;
-                                }
-                                else
-                                {
-                                    Discard(_gcDragging, target);
-                                }
-
-                                // set the value to return to the DoDragDrop call
-                                e.Effects = DragDropEffects.Move;
-                            }
-                        }
-                    }
                 }
             }
-        } 
-
-       /* private void CardClick(object sender, MouseButtonEventArgs e)
-        {
-            GenericCard source = e.Source as GenericCard;
-            if (_matchingMode == true)
-            {
-                if (clickedCards[0] == null && clickedCards[1] == null)
-                {
-                    
-                        clickedCards[0] = source;
-
-                }
-                else if (clickedCards[0] != null && clickedCards[1] == null)
-                {
-                    
-                    if (clickedCards[0].Symbol.Equals("10"))
-                    {
-                        Discard();
-                    }
-                    else
-                    {
-                       
-                            clickedCards[1] = source;
-                            CheckPair();
-                      
-                       
-                    }
-                }
-            }
-        }*/
-
+        }
 
         private bool IsBoardPlayable()
         {
             //Check to see if there are still playable moves. 
-            
+
             return true;
         }
 
@@ -273,11 +268,11 @@ namespace WpfApp1.KingsCorners
                 target.RenderTransform = new RotateTransform(30.0);
                 dragged.RenderTransform = new RotateTransform(-14.5);
                 cnvDiscard.Children.Add(target);
-                cnvDiscard.Children.Add(dragged);              
+                cnvDiscard.Children.Add(dragged);
             }
 
         }
-    
+
 
         private bool IsBoardFilled()
         {
@@ -289,9 +284,9 @@ namespace WpfApp1.KingsCorners
             if (f == 16) { return true; }
             return false;
         }
-        
+
     }
-   
+
 
 
 
