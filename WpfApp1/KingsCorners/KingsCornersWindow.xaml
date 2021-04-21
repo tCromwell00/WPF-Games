@@ -7,6 +7,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="gameWindow" x:Class="WpfApp1.KingsCorners.KingsCornersWindow"
         mc:Ignorable="d"
         Title="Kings in the Corners" Height="666" Width="600" UseLayoutRounding="True" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" MinWidth="600">
+    
     <Grid Background="#FF00A000">
         <Grid x:Name="gridBoard" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="129,31,137,205" AllowDrop="True" Height="auto" Width="auto">
             <Grid.RowDefinitions>
@@ -93,10 +94,9 @@
             </Rectangle.Fill>
         </Rectangle>
         <Canvas x:Name="cnvDiscard" HorizontalAlignment="Left" Height="93" Margin="480,34,0,0" VerticalAlignment="Top" Width="68" AllowDrop="True" Background="Black"/>
-        <Label x:Name="lblWarning" Content="You cannot remove cards until the board is filled." HorizontalAlignment="Left" Margin="156,456,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
-        <Label x:Name="lblGameOver" Content="There are no more legal moves. Game Over." HorizontalAlignment="Left" Margin="156,493,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
-        <Label x:Name="lblLockedCard" Content="You can't move face cards." HorizontalAlignment="Left" Margin="156,525,0,0" VerticalAlignment="Top" Width="392" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Hidden"/>
-        <Grid x:Name="brickKing" Width="68" Height="94" HorizontalAlignment="Center" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop"  Margin="37,44,487,497" Visibility="Hidden"  >
+        <Label x:Name="lblAlerts" Content="You cannot remove cards until the board is filled." HorizontalAlignment="Left" Margin="156,456,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="Red" FontFamily="Tw Cen MT Condensed Extra Bold" FontSize="20" Visibility="Collapsed"/>
+       
+        <Grid x:Name="brickKing" Width="68" Height="94" HorizontalAlignment="Center" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop"  Margin="37,44,487,497"  >
             <Grid.Background>
                 <ImageBrush ImageSource="Images/Placeholders/king-grayscale.png"/>
             </Grid.Background>
@@ -112,6 +112,8 @@
             </Grid.Background>
         </Grid>
         <Grid x:Name="brickBlank" Width="68" Height="93" VerticalAlignment="Center" DragOver="Panel_DragOver" Drop="Panel_Drop" HorizontalAlignment="Center" Background="#00000000" Margin="37,324,487,218"/>
+        <Button x:Name="btnRules" Content="Rules" HorizontalAlignment="Left" Height="24" Margin="10,581,0,0" VerticalAlignment="Top" Width="110" Panel.ZIndex="1" Click="btnRules_Click"/>
+        <TextBlock x:Name="txtRules" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="156,456,0,0" Width="383" Foreground="White"/>
 
 
     </Grid>

@@ -21,14 +21,17 @@ namespace WpfApp1.KingsCorners
     {
         private bool _matchingMode;
         private bool testing = true;
-        //private GenericCard[] clickedCards = new GenericCard[2];
+        
         List<GenericCard> deck;
         GenericCard[,] CardsInPlay = new GenericCard[4, 4];
-        /// Grid[,] spots = new Grid[4, 4];
         
+        /// <summary>
+        /// 
+        /// </summary>
         public KingsCornersWindow()
         {
             InitializeComponent();
+            txtRules.Text = KCstrings.KCrules;
             GenericCardDeck cards = new GenericCardDeck();
             deck = cards.deck;
             if (testing == false)
@@ -44,7 +47,9 @@ namespace WpfApp1.KingsCorners
             ShowNextCardInPile();
             _matchingMode = false;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void ShowNextCardInPile()
         {
             GenericCard f = (GenericCard)spCards.Children[0];
@@ -52,7 +57,11 @@ namespace WpfApp1.KingsCorners
             f.Flip();
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Panel_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent("Object"))
@@ -69,138 +78,130 @@ namespace WpfApp1.KingsCorners
                 }
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Panel_Drop(object sender, DragEventArgs e)
         {
             // If an element in the panel has already handled the drop,
-            // the panel should not also handle it.
-            //lblDebug.Content = e.Handled.ToString();
+            // the panel should not also handle it.         
             if (e.Handled == false)
             {
-                if (_matchingMode == false)
-                {
-                    lblWarning.Visibility = Visibility.Hidden;
-                    Panel _target= (Panel)sender;
-                    UIElement _element = (UIElement)e.Data.GetData("Object");
-
-                    GenericCard _gcDragging = new GenericCard((GenericCard)_element);
+                lblAlerts.Content = "";
+                lblAlerts.Visibility = Visibility.Collapsed;
+                if (_matchingMode == false) //WE ARE PLACING CARDS ON THE BOARD
+                {                    
+                    Panel _target= (Panel)sender; //THE TARGET OF THE DROP EVENT
+                    UIElement _element = (UIElement)e.Data.GetData("Object"); //THE UIELEMENT BEING DRAGGED AND DROPPED              
+                    GenericCard _gcDragging = new GenericCard((GenericCard)_element); //THE GenericCard CONTAINED IN _element
 
                     if (_target != null && _element != null)
                     {
                         // Get the panel that the element currently belongs to,
                         // then remove it from that panel and add it the Children of
                         // the panel that its been dropped on.
-                        Panel _targetParent = (Panel)VisualTreeHelper.GetParent(_target);
-                        Panel _elementParent = (Panel)VisualTreeHelper.GetParent(_element);
+                        Panel _targetParent = (Panel)VisualTreeHelper.GetParent(_target); //THE Panel THAT CONTAINS _target
+                        Panel _elementParent = (Panel)VisualTreeHelper.GetParent(_element); //THE Panel THAT CONTAINS _element
 
                         if (_targetParent != null)
-                        {
-                            //placing new cards on the board
-                            if (_elementParent == spCards)
+                        {                         
+                            if (_elementParent == spCards) //THE PARENT OF _element IS THE DRAW PILE (spCards)
                             {
-
                                 if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
                                 {
-                                    if (_gcDragging.Symbol.Equals("K"))
+                                    if (_gcDragging.Symbol.Equals("K")) //IF THE CARD IS A KING
                                     {
-                                        //Kings
-                                        if (((_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(3)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(3))))
+                                        if ((_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || 
+                                            (_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(3)) || 
+                                            (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || 
+                                            (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(3))) //CHECK IF THE TARGET IS ONE OF THE CORNER SLOTS
                                         {
-                                            _gcDragging.locked = true;
-                                            _elementParent.Children.Remove(_element);
-
-                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
-                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
-                                            _targetParent.Children.Remove(_target);
-                                            _targetParent.Children.Add(_gcDragging);
-                                            
-
-
+                                            _gcDragging.locked = true; //SET THE locked PROPERTY OF THE CARD TO true
+                                            _elementParent.Children.Remove(_element); //REMOVE THE CARD FROM THE DRAW PILE
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty)); //SET THE ROW PROPERTY OF THE CARD
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty)); //SET THE COLUMN PROPERTY OF THE CARD
+                                            _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling the slot in the board with the placeholder image for the King) FROM THE BOARD (gridBoard)
+                                            _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                             ShowNextCardInPile();
                                         }
                                     }
-
-                                    if (_gcDragging.Symbol.Equals("Q"))
+                                    else if (_gcDragging.Symbol.Equals("Q")) //IF THE CARD IS A QUEEN
                                     {
-                                        if (((_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(1)) || (_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(2)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(1)) || (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(2))))
+                                        if ((_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(1)) ||
+                                            (_target.GetValue(Grid.RowProperty).Equals(0) && _target.GetValue(Grid.ColumnProperty).Equals(2)) ||
+                                            (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(1)) ||
+                                            (_target.GetValue(Grid.RowProperty).Equals(3) && _target.GetValue(Grid.ColumnProperty).Equals(2))) //CHECK IF THE TARGET IS ONE OF THE TOP OR BOTTOM MIDDLE SLOTS
                                         {
-                                            _gcDragging.locked = true;
-                                            _elementParent.Children.Remove(_element);
-
-                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
-                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
-                                            _targetParent.Children.Remove(_target);
-                                            _targetParent.Children.Add(_gcDragging);
-
+                                            _gcDragging.locked = true; //SET THE locked PROPERTY OF THE CARD TO true
+                                            _elementParent.Children.Remove(_element); //REMOVE THE CARD FROM THE DRAW PILE
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty)); //SET THE ROW PROPERTY OF THE CARD
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty)); //SET THE COLUMN PROPERTY OF THE CARD
+                                            _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling the slot in the board with the placeholder image for the Queen) FROM THE BOARD (gridBoard)
+                                            _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                             ShowNextCardInPile();
 
                                         }
-                                    }
-
-                                    //Jacks
-                                    if (_gcDragging.Symbol.Equals("J"))
+                                    }                                   
+                                    else if (_gcDragging.Symbol.Equals("J")) //IF THE CARD IS A JACK
                                     {
-                                        if (((_target.GetValue(Grid.RowProperty).Equals(1) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(1) && _target.GetValue(Grid.ColumnProperty).Equals(3)) || (_target.GetValue(Grid.RowProperty).Equals(2) && _target.GetValue(Grid.ColumnProperty).Equals(0)) || (_target.GetValue(Grid.RowProperty).Equals(2) && _target.GetValue(Grid.ColumnProperty).Equals(3))))
+                                        if ((_target.GetValue(Grid.RowProperty).Equals(1) && _target.GetValue(Grid.ColumnProperty).Equals(0)) ||
+                                            (_target.GetValue(Grid.RowProperty).Equals(1) && _target.GetValue(Grid.ColumnProperty).Equals(3)) ||
+                                            (_target.GetValue(Grid.RowProperty).Equals(2) && _target.GetValue(Grid.ColumnProperty).Equals(0)) ||
+                                            (_target.GetValue(Grid.RowProperty).Equals(2) && _target.GetValue(Grid.ColumnProperty).Equals(3))) //CHECK IF THE TARGET IS ONE OF THE LEFT OR RIGHT MIDDLE SLOTS
                                         {
-                                            _gcDragging.locked = true;
-                                            _elementParent.Children.Remove(_element);
-
-                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
-                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
-                                            _targetParent.Children.Remove(_target);
-                                            _targetParent.Children.Add(_gcDragging);
+                                            _gcDragging.locked = true; //SET THE locked PROPERTY OF THE CARD TO true
+                                            _elementParent.Children.Remove(_element); //REMOVE THE CARD FROM THE DRAW PILE
+                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty)); //SET THE ROW PROPERTY OF THE CARD
+                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty)); //SET THE COLUMN PROPERTY OF THE CARD
+                                            _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling the slot in the board with the placeholder image for the Jack) FROM THE BOARD (gridBoard)
+                                            _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                             ShowNextCardInPile();
                                         }
-                                    }
-                                    //Empty
-                                    else
+                                    }                                   
+                                    else //IF THE CARD IS AN ACE OR NUMBER CARD
                                     {
-                                        if (!(_gcDragging.Symbol.Equals("K")) && !(_gcDragging.Symbol.Equals("Q")) && !(_gcDragging.Symbol.Equals("J")))
-                                        {
-                                            
-                                            _elementParent.Children.Remove(_element);
-
-                                            _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty));
-                                            _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty));
-                                            _targetParent.Children.Remove(_target);
-                                            _targetParent.Children.Add(_gcDragging);
-                                            ShowNextCardInPile();
-                                        }
-
+                                        
+                                        _elementParent.Children.Remove(_element); //REMOVE THE CARD FROM THE DRAW PILE
+                                        _gcDragging.SetValue(Grid.RowProperty, _target.GetValue(Grid.RowProperty)); //SET THE ROW PROPERTY OF THE CARD
+                                        _gcDragging.SetValue(Grid.ColumnProperty, _target.GetValue(Grid.ColumnProperty)); //SET THE COLUMN PROPERTY OF THE CARD
+                                        _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling one of the empty slots in the center) FROM THE BOARD (gridBoard)
+                                        _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
+                                        ShowNextCardInPile();
                                     }
-
                                     // set the value to return to the DoDragDrop call
                                     e.Effects = DragDropEffects.Move;
-
-                                    // Need to add logic for checking if there are still playable moves.
-                                    if (IsBoardPlayable() == true)
+                                    
+                                    if (IsBoardFilled() == true) //Is every slot on the board filled?
                                     {
-                                        if (IsBoardFilled() == true)
+                                        //Are there legal matches on the board?
+                                        if (LegalMatchCheck() == true)  //YES
                                         {
                                             _matchingMode = true;
                                         }
-
-                                    }
-                                    else
-                                    {
-                                        //game over
-                                        lblGameOver.Visibility = Visibility.Visible;
+                                        else //NO
+                                        {
+                                            //game over
+                                            lblAlerts.Content = KCstrings.GameOver;
+                                            lblAlerts.Visibility = Visibility.Visible;
+                                        }
                                     }
                                 }
                             }
-                            else if (VisualTreeHelper.GetParent(_elementParent).Equals(gridBoard))
+                            else if (VisualTreeHelper.GetParent(_elementParent).Equals(gridBoard)) //YOU CAN'T DISCARD WHILE THERE ARE STILL EMPTY SLOTS ON THE BOARD
                             {
-                                lblWarning.Visibility = Visibility.Visible;
+                                lblAlerts.Content = KCstrings.BoardNotFilled;
+                                lblAlerts.Visibility = Visibility.Visible;
                             }
-
                         }
                     }
                 }
-                if (_matchingMode == true)
+                if (_matchingMode == true) //WE ARE NOW REMOVING CARDS FROM THE BOARD
                 {
-                    Panel _target = (Panel)sender;
-                    UIElement _element = (UIElement)e.Data.GetData("Object");
-
-                    GenericCard _gcDragging = new GenericCard((GenericCard)_element);
+                    Panel _target = (Panel)sender; //THE TARGET OF THE DROP EVENT
+                    UIElement _element = (UIElement)e.Data.GetData("Object"); //THE UIELEMENT BEING DRAGGED AND DROPPED              
+                    GenericCard _gcDragging = new GenericCard((GenericCard)_element); //THE GenericCard CONTAINED IN _element
 
                     if (_target != null && _element != null)
                     {
@@ -210,50 +211,58 @@ namespace WpfApp1.KingsCorners
                         Panel _elementParent = (Panel)VisualTreeHelper.GetParent(_element);
 
                         if (_elementParent != null)
-                        {
-                            //placing new cards on the board
-                            if (_elementParent ==gridBoard)
+                        {                            
+                            if (_elementParent == gridBoard) //THE PARENT OF THE DRAGGED CARD IS THE BOARD
                             {
-
                                 if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
                                 {
-
                                     // set the value to return to the DoDragDrop call
                                     e.Effects = DragDropEffects.Move;
-
-                                    // Need to add logic for checking if there are still playable moves.
-                                    if (IsBoardPlayable() == true)
+                                    //Are there legal matches on the board? Is the board filled?
+                                    if (LegalMatchCheck() == false && IsBoardFilled() == false) //NO AND NO
                                     {
-                                        if (IsBoardFilled() == true)
+                                        //Can the next card on the draw pile be legally placed on the board?
+                                        if (CanPlayNextCard() == true) //YES
                                         {
-                                            _matchingMode = true;
+                                            _matchingMode = false;
                                         }
-
-                                    }
-                                    else
-                                    {
-                                        //game over
-                                        lblGameOver.Visibility = Visibility.Visible;
-                                    }
+                                        else //NO. GAME OVER!
+                                        {
+                                            lblAlerts.Content = KCstrings.GameOver;
+                                            lblAlerts.Visibility = Visibility.Visible;
+                                        }
+                                    }                                    
                                 }
-                            }
-                            
-
+                            }                          
                         }
                     }
-
-
                 }
             }
         }
 
-        private bool IsBoardPlayable()
+        /// <summary>
+        /// Check to see if the next card in the draw pile can be played
+        /// </summary>
+        /// <returns>boolean</returns>
+        private bool CanPlayNextCard()
         {
-            //Check to see if there are still playable moves. 
+           
 
             return true;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool LegalMatchCheck()
+        {
+            return true;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dragged"></param>
+        /// <param name="target"></param>
         private void Discard(GenericCard dragged, GenericCard target)
         {
             Panel _parentD = (Panel)VisualTreeHelper.GetParent(dragged);
@@ -269,8 +278,10 @@ namespace WpfApp1.KingsCorners
             }
 
         }
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private bool IsBoardFilled()
         {
             int f = 0;
@@ -281,10 +292,15 @@ namespace WpfApp1.KingsCorners
             if (f == 16) { return true; }
             return false;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRules_Click(object sender, RoutedEventArgs e)
+        {
+            lblAlerts.Visibility = Visibility.Collapsed;
+            txtRules.Visibility = (txtRules.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;         
+        }
     }
-
-
-
-
 }

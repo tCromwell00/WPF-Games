@@ -80,6 +80,11 @@
     <Compile Include="KingsCorners\KingsCornersWindow.xaml.cs">
       <DependentUpon>KingsCornersWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="KingsCorners\KCstrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KCstrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -118,6 +123,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="KingsCorners\KCstrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KCstrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
