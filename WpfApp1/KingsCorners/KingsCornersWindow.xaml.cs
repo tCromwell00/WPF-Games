@@ -23,7 +23,7 @@ namespace WpfApp1.KingsCorners
         private bool testing = true;
         
         List<GenericCard> deck;
-        GenericCard[,] CardsInPlay = new GenericCard[4, 4];
+        List<GenericCard> CardsInPlay = new List<GenericCard>();
         
         /// <summary>
         /// 
@@ -58,10 +58,10 @@ namespace WpfApp1.KingsCorners
         }
 
         /// <summary>
-        /// 
+        /// Custom logic to handle the DragOver event for cards and panels in the window.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The Panel raising the DragOver event.</param>
+        /// <param name="e">The DragEventArgs object carrying the data for the event.</param>
         private void Panel_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent("Object"))
@@ -79,16 +79,16 @@ namespace WpfApp1.KingsCorners
             }
         }
         /// <summary>
-        /// 
+        /// Custom Logic to handle the DragDrop events of cards in the window.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The Panel object raising the Drop event.</param>
+        /// <param name="e">The DragEventArgs object being handled by this method.</param>
         private void Panel_Drop(object sender, DragEventArgs e)
         {
             // If an element in the panel has already handled the drop,
             // the panel should not also handle it.         
-            if (e.Handled == false)
-            {
+          //  if (e.Handled == false)
+            //{
                 lblAlerts.Content = "";
                 lblAlerts.Visibility = Visibility.Collapsed;
                 if (_matchingMode == false) //WE ARE PLACING CARDS ON THE BOARD
@@ -125,6 +125,7 @@ namespace WpfApp1.KingsCorners
                                             _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling the slot in the board with the placeholder image for the King) FROM THE BOARD (gridBoard)
                                             _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                             ShowNextCardInPile();
+                                            CardsInPlay.Add(_gcDragging);
                                         }
                                     }
                                     else if (_gcDragging.Symbol.Equals("Q")) //IF THE CARD IS A QUEEN
@@ -141,7 +142,7 @@ namespace WpfApp1.KingsCorners
                                             _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling the slot in the board with the placeholder image for the Queen) FROM THE BOARD (gridBoard)
                                             _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                             ShowNextCardInPile();
-
+                                            CardsInPlay.Add(_gcDragging);
                                         }
                                     }                                   
                                     else if (_gcDragging.Symbol.Equals("J")) //IF THE CARD IS A JACK
@@ -158,6 +159,7 @@ namespace WpfApp1.KingsCorners
                                             _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling the slot in the board with the placeholder image for the Jack) FROM THE BOARD (gridBoard)
                                             _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                             ShowNextCardInPile();
+                                            CardsInPlay.Add(_gcDragging);
                                         }
                                     }                                   
                                     else //IF THE CARD IS AN ACE OR NUMBER CARD
@@ -169,6 +171,7 @@ namespace WpfApp1.KingsCorners
                                         _targetParent.Children.Remove(_target); //REMOVE THE TARGET (the empty grid filling one of the empty slots in the center) FROM THE BOARD (gridBoard)
                                         _targetParent.Children.Add(_gcDragging); //ADD THE CARD TO BOARD
                                         ShowNextCardInPile();
+                                        CardsInPlay.Add(_gcDragging);
                                     }
                                     // set the value to return to the DoDragDrop call
                                     e.Effects = DragDropEffects.Move;
@@ -202,6 +205,8 @@ namespace WpfApp1.KingsCorners
                     Panel _target = (Panel)sender; //THE TARGET OF THE DROP EVENT
                     UIElement _element = (UIElement)e.Data.GetData("Object"); //THE UIELEMENT BEING DRAGGED AND DROPPED              
                     GenericCard _gcDragging = new GenericCard((GenericCard)_element); //THE GenericCard CONTAINED IN _element
+                    //GenericCard target = new GenericCard((GenericCard)_target);
+                    
 
                     if (_target != null && _element != null)
                     {
@@ -216,10 +221,17 @@ namespace WpfApp1.KingsCorners
                             {
                                 if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
                                 {
+
+                                    //if (LegalMatchCheck() == true)
+                                    {
+                                        //Discard(_target, _gcDragging);
+
+                                    }
                                     // set the value to return to the DoDragDrop call
                                     e.Effects = DragDropEffects.Move;
                                     //Are there legal matches on the board? Is the board filled?
-                                    if (LegalMatchCheck() == false && IsBoardFilled() == false) //NO AND NO
+                                    
+                                   /* if (LegalMatchCheck() == false && IsBoardFilled() == false) //NO AND NO
                                     {
                                         //Can the next card on the draw pile be legally placed on the board?
                                         if (CanPlayNextCard() == true) //YES
@@ -231,57 +243,161 @@ namespace WpfApp1.KingsCorners
                                             lblAlerts.Content = KCstrings.GameOver;
                                             lblAlerts.Visibility = Visibility.Visible;
                                         }
-                                    }                                    
+                                    } */                                   
                                 }
                             }                          
                         }
                     }
                 }
             }
-        }
+       // }
 
         /// <summary>
-        /// Check to see if the next card in the draw pile can be played
+        /// Check if the next card in the draw pile can be played
         /// </summary>
         /// <returns>boolean</returns>
         private bool CanPlayNextCard()
         {
            
 
-            return true;
+            return false;
         }
         /// <summary>
-        /// 
+        /// Check if there are any legal matches left on the board to discard
         /// </summary>
-        /// <returns></returns>
+        /// <returns>boolean</returns>
         private bool LegalMatchCheck()
         {
-            return true;
+            for(int a = 0; a < 15; a++)
+            {
+                for(int b=0;b<15;b++)
+                {
+                    if (a == b) { continue; }
+                    else if(CardsInPlay[a].locked ==true || CardsInPlay[b].locked==true){ continue; }
+                    else if (CardsInPlay[a].FaceValue + CardsInPlay[b].FaceValue == 10) { return true; }
+                }
+            }
+            return false;
         }
         /// <summary>
-        /// 
+        /// Check if a pair of cards adds up to 10. Moves them from the board to the discard pile if they do.
         /// </summary>
-        /// <param name="dragged"></param>
-        /// <param name="target"></param>
-        private void Discard(GenericCard dragged, GenericCard target)
+        /// <param name="dragged">The card being dragged</param>
+        /// <param name="target">The card being dropped on</param>
+        private void Discard(GenericCard target, GenericCard dragged)
         {
             Panel _parentD = (Panel)VisualTreeHelper.GetParent(dragged);
             Panel _parentT = (Panel)VisualTreeHelper.GetParent(target);
-            if (dragged.FaceValue + target.FaceValue == 10)
+            if(target.locked !=true && dragged.locked != true)
             {
-                _parentD.Children.Remove(dragged);
-                _parentT.Children.Remove(target);
-                target.RenderTransform = new RotateTransform(30.0);
-                dragged.RenderTransform = new RotateTransform(-14.5);
-                cnvDiscard.Children.Add(target);
-                cnvDiscard.Children.Add(dragged);
+                if (dragged.FaceValue + target.FaceValue == 10)
+                {
+                    Grid newGridD = new Grid();
+                    newGridD.Width = 68;
+                    newGridD.Height = 93;
+                    Grid newGridT = new Grid();
+                    newGridT.Width = 68;
+                    newGridT.Height = 93;
+
+                    int r1 = (int)dragged.GetValue(Grid.RowProperty);
+                    int c1 = (int)dragged.GetValue(Grid.ColumnProperty);
+                    int r2 = (int)target.GetValue(Grid.RowProperty);
+                    int c2 = (int)target.GetValue(Grid.ColumnProperty);
+
+                    _parentD.Children.Remove(dragged);
+                    _parentT.Children.Remove(target);
+
+                    //DRAGGED SPOT
+                    if ((r1 == 0 || r1 == 3) && (c1 == 0 || c1 == 3)) //KINGS
+                    {
+                        newGridD.Background = brickKing.Background;
+                        newGridD.SetValue(Grid.RowProperty, r1);
+                        newGridD.SetValue(Grid.ColumnProperty, c1);
+                        gridBoard.Children.Add(newGridD);
+                    }
+                    else if ((r1 == 0 || r1 == 3) && (c1 == 1 || c1 == 2)) //QUEENS
+                    {
+                        newGridD.Background = brickQueen.Background;
+                        newGridD.SetValue(Grid.RowProperty, r1);
+                        newGridD.SetValue(Grid.ColumnProperty, c1);
+                        gridBoard.Children.Add(newGridD);
+                    }
+                    else if ((r1 == 1 || r1 == 2) && (c1 == 0 || c1 == 3)) //JACKS
+                    {
+                        newGridD.Background = brickJack.Background;
+                        newGridD.SetValue(Grid.RowProperty, r1);
+                        newGridD.SetValue(Grid.ColumnProperty, c1);
+                        gridBoard.Children.Add(newGridD);
+                    }
+                    else if ((r1 == 1 || r1 == 2) && (c1 == 1 || c1 == 2)) //BLANKS
+                    {
+                        newGridD.Background = brickBlank.Background;
+                        newGridD.SetValue(Grid.RowProperty, r1);
+                        newGridD.SetValue(Grid.ColumnProperty, c1);
+                        gridBoard.Children.Add(newGridD);
+                    }
+
+                    //TARGET SPOT
+                    if ((r2 == 0 || r2 == 3) && (c2 == 0 || c2 == 3)) //KINGS
+                    {
+                        newGridT.Background = brickKing.Background;
+                        newGridT.SetValue(Grid.RowProperty, r2);
+                        newGridT.SetValue(Grid.ColumnProperty, c2);
+                        gridBoard.Children.Add(newGridT);
+                    }
+                    else if ((r2 == 0 || r2 == 3) && (c2 == 1 || c2 == 2)) //QUEENS
+                    {
+                        newGridT.Background = brickQueen.Background;
+                        newGridT.SetValue(Grid.RowProperty, r2);
+                        newGridT.SetValue(Grid.ColumnProperty, c2);
+                        gridBoard.Children.Add(newGridT);
+                    }
+                    else if ((r2 == 1 || r2 == 2) && (c2 == 0 || c2 == 3)) //JACKS
+                    {
+                        newGridT.Background = brickJack.Background;
+                        newGridT.SetValue(Grid.RowProperty, r2);
+                        newGridT.SetValue(Grid.ColumnProperty, c2);
+                        gridBoard.Children.Add(newGridT);
+                    }
+                    else if ((r2 == 1 || r2 == 2) && (c2 == 1 || c2 == 2)) //BLANKS
+                    {
+                        newGridT.Background = brickBlank.Background;
+                        newGridT.SetValue(Grid.RowProperty, r2);
+                        newGridT.SetValue(Grid.ColumnProperty, c2);
+                        gridBoard.Children.Add(newGridT);
+                    }
+                    CardsInPlay.Remove(target);
+                    CardsInPlay.Remove(dragged);
+
+                    target.RenderTransform = new RotateTransform(30.0);
+                    dragged.RenderTransform = new RotateTransform(-14.5);
+                    cnvDiscard.Children.Add(target);
+                    cnvDiscard.Children.Add(dragged);
+                }
             }
+            
 
         }
+
+        private void Discard(GenericCard target)
+        {
+          
+            Panel _parentT = (Panel)VisualTreeHelper.GetParent(target);
+            if ( target.Symbol.Equals("10"))
+            {
+                
+                _parentT.Children.Remove(target);
+                
+                target.RenderTransform = new RotateTransform(30.0);
+                
+                cnvDiscard.Children.Add(target);
+             
+            }
+        }
         /// <summary>
-        /// 
+        /// Check if all 16 slots on the board are filled.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>boolean</returns>
         private bool IsBoardFilled()
         {
             int f = 0;
@@ -293,10 +409,10 @@ namespace WpfApp1.KingsCorners
             return false;
         }
         /// <summary>
-        /// 
+        /// When the Rules button is clicked, display/hide a textbox with the rules for Kings in the Corner.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The Rules button being clicked</param>
+        /// <param name="e">the RoutedEventArgs object automatically handled by WPF</param>
         private void btnRules_Click(object sender, RoutedEventArgs e)
         {
             lblAlerts.Visibility = Visibility.Collapsed;

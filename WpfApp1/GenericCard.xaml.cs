@@ -100,19 +100,20 @@ namespace WpfApp1
                 // Package the data.
                 DataObject data = new DataObject();
                 data.SetData(DataFormats.StringFormat, g.Background.ToString());
-                data.SetData("Int", _faceValue);
-                data.SetData(DataFormats.StringFormat, _symbol);
-                data.SetData(DataFormats.StringFormat, _suit);
-                data.SetData("Bool", faceDown);
-                data.SetData(DataFormats.StringFormat, faceImage.ToString());
-                data.SetData(DataFormats.StringFormat, backImage.ToString());
-                data.SetData("Double", g.Width);
-                data.SetData("Double", g.Height);
+                //data.SetData("Int", _faceValue);
+                //data.SetData(DataFormats.StringFormat, _symbol);
+                //data.SetData(DataFormats.StringFormat, _suit);
+                //data.SetData("Bool", faceDown);
+                //data.SetData(DataFormats.StringFormat, faceImage.ToString());
+                //data.SetData(DataFormats.StringFormat, backImage.ToString());
+                //data.SetData("Double", g.Width);
+                //data.SetData("Double", g.Height);
                 data.SetData("Object", this);
 
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Copy | DragDropEffects.Move);
             }
+            e.Handled = true;
         }
         protected override void OnDrop(DragEventArgs e)
         {
@@ -146,6 +147,7 @@ namespace WpfApp1
                 }
             }
             e.Handled = true;
+            
             
         }
         protected override void OnDragOver(DragEventArgs e)
@@ -225,7 +227,6 @@ namespace WpfApp1
             e.Handled = true;
         }
 
-
-
+      
     }
 }
