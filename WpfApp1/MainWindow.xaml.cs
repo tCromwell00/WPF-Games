@@ -27,13 +27,19 @@ namespace WpfApp1
 
         private void btnMinesweeper_Click(object sender, RoutedEventArgs e)
         {
-            Window window = new Minesweeper.MinesweeperWindow();
-            window.Show();
+            Window w = new Minesweeper.MinesweeperWindow();
+            w.Show();
         }
 
         private void btnKings_Click(object sender, RoutedEventArgs e)
         {
             Window w = new KingsCorners.KingsCornersWindow();
+            w.Show();
+        }
+
+        private void btnBattleship_Click(object sender, RoutedEventArgs e)
+        {
+            Window w = new Battleship.BattleshipWindow();
             w.Show();
         }
     }

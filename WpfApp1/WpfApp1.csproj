@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Battleship\BattleshipWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GenericCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -72,6 +76,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Battleship\BattleshipWindow.xaml.cs">
+      <DependentUpon>BattleshipWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GenericCard.xaml.cs">
       <DependentUpon>GenericCard.xaml</DependentUpon>
