@@ -48,25 +48,25 @@ namespace WpfApp1
                 faceDown = facingDown;
                 if (faceDown == true)
                 {
-                    g.Background = backImage;
+                    Background = backImage;
                 }
             }
-            else { g.Background = Brushes.Transparent; }
+            else { Background = Brushes.Transparent; }
             
         }
 
         public GenericCard(GenericCard gc)
         {
             InitializeComponent();
-            this.g.Background = gc.Background;
+            this.Background = gc.Background;
             this._faceValue = gc._faceValue;
             this._symbol = gc._symbol;
             this._suit = gc._suit;
             this.faceDown = gc.faceDown;
             this.faceImage = gc.faceImage;
             this.backImage = gc.backImage;
-            this.g.Height = gc.g.Height;
-            this.g.Width = gc.g.Width;
+            this.Height = gc.Height;
+            this.Width = gc.Width;
             this.locked = gc.locked;
         }
 
@@ -88,8 +88,8 @@ namespace WpfApp1
 
         public void Flip()
         {
-            if (faceDown == true) { faceDown = false; g.Background = faceImage; }
-            else { faceDown = true;g.Background= backImage; }
+            if (faceDown == true) { faceDown = false; this.Background = faceImage; }
+            else { faceDown = true; Background= backImage; }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -99,7 +99,7 @@ namespace WpfApp1
             {
                 // Package the data.
                 DataObject data = new DataObject();
-                data.SetData(DataFormats.StringFormat, g.Background.ToString());
+                data.SetData(DataFormats.StringFormat, Background.ToString());
                 //data.SetData("Int", _faceValue);
                 //data.SetData(DataFormats.StringFormat, _symbol);
                 //data.SetData(DataFormats.StringFormat, _suit);
@@ -130,7 +130,7 @@ namespace WpfApp1
                 if (converter.IsValid(dataString))
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString);
-                    g.Background=newFill;
+                    Background=newFill;
                  
 
                     // Set Effects to notify the drag source what effect
@@ -146,8 +146,8 @@ namespace WpfApp1
                     }
                 }
             }
-            e.Handled = true;
-            
+
+           // e.Handled = true;
             
         }
         protected override void OnDragOver(DragEventArgs e)
@@ -184,7 +184,7 @@ namespace WpfApp1
         {
             base.OnDragEnter(e);
             // Save the current Fill brush so that you can revert back to this value in DragLeave.
-            _previousFill = g.Background;
+            _previousFill = Background;
 
             // If the DataObject contains string data, extract it.
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
@@ -196,7 +196,7 @@ namespace WpfApp1
                 if (converter.IsValid(dataString))
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString.ToString());
-                    g.Background = newFill;
+                    Background = newFill;
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace WpfApp1
         {
             base.OnDragLeave(e);
             // Undo the preview that was applied in OnDragEnter.
-            g.Background = _previousFill;
+            Background = _previousFill;
         }
 
         protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
