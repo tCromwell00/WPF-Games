@@ -30,5 +30,11 @@ namespace WpfApp1
             Window window = new Minesweeper.MinesweeperWindow();
             window.Show();
         }
+
+        private void btnKings_Click(object sender, RoutedEventArgs e)
+        {
+            Window w = new KingsCorners.KingsCornersWindow();
+            w.Show();
+        }
     }
 }

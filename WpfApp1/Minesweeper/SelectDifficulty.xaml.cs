@@ -25,6 +25,7 @@ namespace WpfApp1.Minesweeper
         public SelectDifficulty()
         {
             InitializeComponent();
+            this.WindowStyle = WindowStyle.None;
         }
 
         private void btnEasy_Click(object sender, RoutedEventArgs e)
