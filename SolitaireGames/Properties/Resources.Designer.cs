@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WpfApp1.KingsCorners {
-    using System;
+namespace SolitaireGames.Properties {
     
     
     /// <summary>
@@ -19,17 +18,17 @@ namespace WpfApp1.KingsCorners {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class KCstrings {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal KCstrings() {
+        internal Resources() {
         }
         
         /// <summary>
@@ -38,8 +37,8 @@ namespace WpfApp1.KingsCorners {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WpfApp1.KingsCorners.KCstrings", typeof(KCstrings).Assembly);
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SolitaireGames.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,42 +56,6 @@ namespace WpfApp1.KingsCorners {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You cannot remove cards while there are still empty spaces on the board..
-        /// </summary>
-        internal static string BoardNotFilled {
-            get {
-                return ResourceManager.GetString("BoardNotFilled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are no more legal moves. Game Over..
-        /// </summary>
-        internal static string GameOver {
-            get {
-                return ResourceManager.GetString("GameOver", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Place cards on the board until it is filled. Face Cards can only go in their respective slots. Once all the slots are filled, drag pairs of cards together that add up to 10 (or click a single 10 card) and they will be moved from the board to the discard pile. When you have removed all legal pairs from the board, you will be able to place more cards on the board. Repeat. The win condition is to place every Face card in the proper slot and get every other card in the discard pile. Aces are worth 1..
-        /// </summary>
-        internal static string KCrules {
-            get {
-                return ResourceManager.GetString("KCrules", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are still legal moves you can make..
-        /// </summary>
-        internal static string MoreMoves {
-            get {
-                return ResourceManager.GetString("MoreMoves", resourceCulture);
             }
         }
     }
